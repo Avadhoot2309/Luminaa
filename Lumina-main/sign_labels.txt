@@ -1,0 +1,11 @@
+A
+B
+C
+D
+BIRD
+CAT
+DOG
+Help
+NO
+STOP
+YES

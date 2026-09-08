@@ -1,0 +1,617 @@
+/* ADHD Sort & Click Game Styles */
+
+.sort-click-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fef3c7 0%, #dbeafe 50%, #f0fdf4 100%);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.sort-top-back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 12000;
+    padding: 0.7rem 1.1rem;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1f2937;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif;
+}
+
+.sort-top-back-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Header */
+.sort-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    animation: slideDown 0.6s ease-out;
+}
+
+.sort-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+}
+
+.sort-subtitle {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Progress Bar */
+.sort-progress-container {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.sort-progress-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.sort-progress-bar {
+    height: 30px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 3px solid #4b5563;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sort-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10B981 0%, #34D399 100%);
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Objects Area */
+.sort-objects-area {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 700px;
+}
+
+.sort-objects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1.5rem;
+    place-items: center;
+}
+
+/* Object Item */
+.sort-object {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border: 3px solid #9ca3af;
+    cursor: grab;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.sort-object:active {
+    cursor: grabbing;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.sort-object.sorted {
+    opacity: 0.4;
+    cursor: default;
+    background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+}
+
+.sort-object-emoji {
+    font-size: 3.5rem;
+    transition: transform 0.2s ease;
+}
+
+.sort-object:hover:not(.sorted) .sort-object-emoji {
+    transform: scale(1.1);
+}
+
+.sort-checkmark {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 2rem;
+    animation: popIn 0.5s ease-out;
+}
+
+/* Shake Animation for Wrong Drops */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+
+    75% {
+        transform: translateX(-10px);
+    }
+}
+
+.sort-object.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Buckets Area */
+.sort-buckets-area {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 700px;
+}
+
+.sort-buckets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Bucket */
+.sort-bucket {
+    min-height: 150px;
+    border: 4px dashed #ccc;
+    border-radius: 15px;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sort-bucket::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.sort-bucket-label {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    z-index: 1;
+}
+
+.sort-bucket-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    z-index: 1;
+}
+
+.sort-bucket-count {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #10b981;
+    animation: popIn 0.5s ease-out;
+}
+
+/* Instructions */
+.sort-instructions {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.sort-instructions p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e40af;
+}
+
+/* Celebration Effect */
+.sort-celebration {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.sort-star {
+    position: absolute;
+    font-size: 2rem;
+    animation: popInScale 0.6s ease-out forwards;
+}
+
+.sort-star:nth-child(1) {
+    left: 20%;
+    top: 30%;
+    animation-delay: 0s;
+}
+
+.sort-star:nth-child(2) {
+    left: 50%;
+    top: 20%;
+    animation-delay: 0.1s;
+    font-size: 2.5rem;
+}
+
+.sort-star:nth-child(3) {
+    right: 20%;
+    top: 35%;
+    animation-delay: 0.2s;
+}
+
+@keyframes popInScale {
+    0% {
+        transform: scale(0) translate(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1) translate(0);
+        opacity: 0;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Victory Screen */
+.sort-victory-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #fef3c7 0%, #dbeafe 50%, #f0fdf4 100%);
+    z-index: 10000;
+}
+
+.sort-victory-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 40px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: bounceIn 0.6s ease-out;
+    max-width: 500px;
+    width: 100%;
+}
+
+.sort-victory-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #1f2937;
+    margin: 0 0 1.5rem 0;
+}
+
+.sort-victory-score {
+    margin: 2rem 0;
+}
+
+.sort-trophy-large {
+    font-size: 4rem;
+    animation: bounce 1s ease-in-out infinite;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.sort-score-text {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #f59e0b;
+    margin: 0;
+}
+
+.sort-score-details {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin: 0.5rem 0 0 0;
+    font-weight: 600;
+}
+
+.sort-celebration-large {
+    font-size: 3.5rem;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.sort-bounce-star {
+    display: inline-block;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+.sort-bounce-star:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.sort-bounce-star:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Buttons */
+.sort-play-again-btn,
+.sort-close-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif;
+}
+
+.sort-play-again-btn {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+}
+
+.sort-play-again-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(245, 158, 11, 0.6);
+}
+
+.sort-close-btn {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    margin-top: 1rem;
+}
+
+.sort-close-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sort-click-container {
+        padding: 1rem;
+    }
+
+    .sort-title {
+        font-size: 2rem;
+    }
+
+    .sort-subtitle {
+        font-size: 1rem;
+    }
+
+    .sort-objects-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .sort-object {
+        width: 80px;
+        height: 80px;
+    }
+
+    .sort-object-emoji {
+        font-size: 2.5rem;
+    }
+
+    .sort-buckets-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .sort-bucket {
+        min-height: 120px;
+    }
+
+    .sort-bucket-label {
+        font-size: 1.1rem;
+    }
+
+    .sort-victory-content {
+        padding: 2rem;
+    }
+
+    .sort-victory-title {
+        font-size: 2rem;
+    }
+
+    .sort-trophy-large {
+        font-size: 3rem;
+    }
+
+    .sort-score-text {
+        font-size: 1.4rem;
+    }
+
+    .sort-celebration-large {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .sort-top-back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.95rem;
+    }
+
+    .sort-objects-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .sort-object {
+        width: 70px;
+        height: 70px;
+    }
+
+    .sort-object-emoji {
+        font-size: 2rem;
+    }
+
+    .sort-title {
+        font-size: 1.5rem;
+    }
+
+    .sort-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .sort-buckets-area {
+        padding: 1rem;
+    }
+
+    .sort-bucket {
+        min-height: 100px;
+        padding: 1rem;
+    }
+
+    .sort-bucket-label {
+        font-size: 0.95rem;
+    }
+
+    .sort-instructions {
+        font-size: 0.9rem;
+    }
+
+    .sort-play-again-btn,
+    .sort-close-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .sort-victory-title {
+        font-size: 1.8rem;
+    }
+
+    .sort-score-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* Drag States */
+.sort-object[draggable='true']:hover:not(.sorted) {
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    border-color: #6b7280;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}

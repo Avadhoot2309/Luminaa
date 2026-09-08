@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800&family=Inter:wght@400;500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/open-dyslexic');
+
+:root {
+  --navy: #0A1628;
+  --blue: #4A90D9;
+  --blue-mid: #357ABD;
+  --blue-pale: #EBF4FF;
+  --teal: #1A7A62;
+  --teal-pale: #E4F2EE;
+  --amber: #E8920C;
+  --amber-pale: #FDF3DC;
+  --purple: #7B68EE;
+  --cream: #F7F6F2;
+  --white: #FFFFFF;
+  --text: #1A2635;
+  --text-mid: #2A3F55;
+  --text-soft: #5A7088;
+  --border: rgba(74, 144, 217, 0.13);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--cream);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background 0.3s ease, font-family 0.3s ease;
+}
+
+/* ─── Dyslexia Font Support ─────────────────────────────────────────────────── */
+html.dyslexia-mode,
+html.dyslexia-mode body {
+  font-family: 'Open-Dyslexic', sans-serif !important;
+}
+
+html.dyslexia-mode * {
+  font-family: 'Open-Dyslexic', sans-serif !important;
+}
+
+/* High Contrast Mode */
+html.high-contrast-mode {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+html.high-contrast-mode body {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+html.high-contrast-mode * {
+  background-color: inherit;
+  color: inherit;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(10, 22, 40, 0.05);
+}
+
+.card-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(10, 22, 40, 0.12);
+}
+
+.btn-premium {
+  background: var(--amber);
+  color: #fff;
+  font-weight: 800;
+  padding: 12px 24px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(232, 146, 12, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-premium:hover {
+  background: #C87000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(232, 146, 12, 0.45);
+}
+
+#root {
+  min-height: 100vh;
+  background-color: var(--cream);
+}

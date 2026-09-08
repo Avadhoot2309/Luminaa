@@ -1,0 +1,85 @@
+# Root gitignore for Luminaa Project
+
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+
+# Python compiled files
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Firebase / Secret files
+.env
+.env.local
+.env.*
+serviceAccountKey.json
+**/serviceAccountKey.json
+
+# Log files
+*.log
+**/firebase-debug.log
+**/firestore-debug.log
+**/ui-debug.log
+
+# Firebase cache
+.firebase/
+**/.firebase/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# VSCode specific
+.vscode/settings.json
+.vscode/extensions.json
+
+# MacOS
+.AppleDouble
+.LSOverride
+.CFUserTextStyles*
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+
+# Large binary files (ML models, trained weights)
+*.h5
+*.pth
+*.pkl
+*.joblib
+*.onnx

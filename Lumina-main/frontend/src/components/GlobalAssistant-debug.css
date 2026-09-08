@@ -1,0 +1,37 @@
+/* Debug Console Display */
+.leo-debug-console {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    max-height: 200px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #0f0;
+    border: 1px solid #0f0;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    overflow-y: auto;
+    z-index: 9999;
+}
+
+.leo-debug-console div {
+    margin: 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.leo-debug-console .log-error {
+    color: #f44;
+}
+
+.leo-debug-console .log-log {
+    color: #0f0;
+}
+
+.leo-debug-console .log-time {
+    color: #888;
+    margin-right: 8px;
+}

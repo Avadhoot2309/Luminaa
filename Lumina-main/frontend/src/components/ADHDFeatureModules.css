@@ -1,0 +1,296 @@
+.adhd-feature-overlay {
+    min-height: 100vh;
+    width: 100%;
+    background: linear-gradient(135deg, #eff6ff 0%, #fef9c3 45%, #f0fdf4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: 'Nunito', 'Comic Sans MS', sans-serif;
+}
+
+.adhd-feature-card {
+    width: min(960px, 100%);
+    max-height: 92vh;
+    overflow: auto;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 2px solid #dbeafe;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.12);
+    padding: 20px;
+}
+
+.adhd-feature-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.adhd-feature-title {
+    margin: 0;
+    font-size: clamp(1.3rem, 2.1vw, 2rem);
+    color: #0f172a;
+}
+
+.adhd-feature-subtitle {
+    margin: 6px 0 0;
+    color: #475569;
+    font-weight: 700;
+}
+
+.adhd-close-btn,
+.adhd-main-btn,
+.adhd-soft-btn,
+.adhd-option-btn {
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.adhd-close-btn {
+    background: #e2e8f0;
+    color: #1e293b;
+    padding: 10px 14px;
+}
+
+.adhd-main-btn {
+    background: #2563eb;
+    color: #ffffff;
+    padding: 10px 16px;
+}
+
+.adhd-soft-btn {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 10px 14px;
+}
+
+.adhd-close-btn:hover,
+.adhd-main-btn:hover,
+.adhd-soft-btn:hover,
+.adhd-option-btn:hover {
+    transform: translateY(-2px);
+}
+
+.adhd-progress-wrap {
+    margin: 14px 0 20px;
+}
+
+.adhd-progress-text {
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.adhd-progress-bar {
+    height: 14px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.adhd-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    transition: width 0.3s ease;
+}
+
+.adhd-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.story-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.story-step {
+    background: #f8fafc;
+    border: 2px solid #bfdbfe;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: left;
+    min-height: 110px;
+}
+
+.story-step.done {
+    opacity: 0.55;
+    border-style: dashed;
+}
+
+.story-step.shake {
+    animation: adhd-shake 0.45s ease;
+}
+
+.story-step-order {
+    font-size: 0.8rem;
+    color: #334155;
+    font-weight: 800;
+}
+
+.story-step-text {
+    margin-top: 10px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.count-emoji-box {
+    min-height: 90px;
+    border: 2px dashed #93c5fd;
+    background: #eff6ff;
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 2rem;
+    line-height: 1.4;
+}
+
+.count-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.adhd-option-btn {
+    padding: 12px;
+    background: #f8fafc;
+    border: 2px solid #bfdbfe;
+    color: #0f172a;
+    font-size: 1rem;
+}
+
+.feedback-row {
+    margin-top: 12px;
+    min-height: 28px;
+    font-weight: 800;
+}
+
+.feedback-row.good {
+    color: #15803d;
+}
+
+.feedback-row.bad {
+    color: #b45309;
+}
+
+.flashcard {
+    margin-top: 14px;
+    min-height: 240px;
+    border-radius: 16px;
+    border: 2px solid #a7f3d0;
+    background: linear-gradient(135deg, #ecfeff, #f0fdf4);
+    padding: 24px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.flash-label {
+    font-size: 0.8rem;
+    color: #334155;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.flash-main {
+    font-size: clamp(1.4rem, 3vw, 2.3rem);
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.toolbar {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.draw-canvas {
+    width: 100%;
+    height: 340px;
+    border-radius: 14px;
+    border: 2px dashed #a5b4fc;
+    touch-action: none;
+    background: #fff;
+    cursor: crosshair;
+}
+
+.story-reader {
+    margin-top: 10px;
+    border: 2px solid #fcd34d;
+    background: #fffbeb;
+    border-radius: 14px;
+    padding: 16px;
+    color: #1f2937;
+    line-height: 1.6;
+    font-weight: 700;
+}
+
+.option-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.quiz-pill {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1e3a8a;
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+.victory-box {
+    margin-top: 12px;
+    padding: 16px;
+    border-radius: 14px;
+    border: 2px solid #86efac;
+    background: #f0fdf4;
+    text-align: center;
+}
+
+@keyframes adhd-shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-8px);
+    }
+
+    50% {
+        transform: translateX(8px);
+    }
+
+    75% {
+        transform: translateX(-8px);
+    }
+}
+
+@media (max-width: 640px) {
+    .adhd-feature-overlay {
+        padding: 10px;
+    }
+
+    .adhd-feature-card {
+        padding: 14px;
+    }
+
+    .draw-canvas {
+        height: 260px;
+    }
+}

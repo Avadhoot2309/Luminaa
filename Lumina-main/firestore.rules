@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. PINs collection: Students need to read to validate their PIN at login
+    match /pins/{pin} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // 2. Student Profiles: Created by teachers, readable by students via PIN
+    match /studentProfiles/{studentId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // 3. Users collection (Teacher / Educator accounts)
+    match /users/{userId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // 4. Default: allow authenticated teachers to manage content, lessons, and progress
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

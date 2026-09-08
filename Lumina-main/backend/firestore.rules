@@ -1,0 +1,180 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper Functions ────────────────────────────────────
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && getUserRole() == 'admin';
+    }
+
+    function isParentOf(studentId) {
+      return isAuthenticated()
+        && getUserRole() == 'parent'
+        && studentId in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.linkedStudents;
+    }
+
+    function isTeacherOf(studentId) {
+      return isAuthenticated()
+        && getUserRole() == 'teacher'
+        && studentId in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.managedStudents;
+    }
+
+    // ─── Users ───────────────────────────────────────────────
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // ─── PINs ────────────────────────────────────────────────
+    
+    match /pins/{pin} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ─── Student Profiles ────────────────────────────────────
+
+    match /studentProfiles/{studentId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // ─── Content (read-only for authenticated students) ──────
+
+    match /subjects/{subjectId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /chapters/{chapterId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /lessons/{lessonId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /assessments/{assessmentId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /games/{gameId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // ─── Student Progress (own data + parent/teacher read) ──
+
+    match /studentProgress/{studentId} {
+      allow read: if isOwner(studentId) || isParentOf(studentId) || isTeacherOf(studentId) || isAdmin();
+      allow write: if isOwner(studentId) || isAdmin();
+
+      match /{document=**} {
+        allow read: if isOwner(studentId) || isParentOf(studentId) || isTeacherOf(studentId) || isAdmin();
+        allow write: if isOwner(studentId) || isAdmin();
+      }
+    }
+
+    // ─── Behavior Logs ───────────────────────────────────────
+
+    match /behaviorLogs/{logId} {
+      allow read: if isAuthenticated()
+        && (resource.data.studentId == request.auth.uid
+            || isParentOf(resource.data.studentId)
+            || isTeacherOf(resource.data.studentId)
+            || isAdmin());
+      allow create: if isAuthenticated() && request.resource.data.studentId == request.auth.uid;
+    }
+
+    // ─── Performance Analytics ───────────────────────────────
+
+    match /performanceAnalytics/{studentId} {
+      allow read: if isOwner(studentId) || isParentOf(studentId) || isTeacherOf(studentId) || isAdmin();
+      allow write: if isOwner(studentId) || isAdmin();
+    }
+
+    // ─── Recommendations ─────────────────────────────────────
+
+    match /recommendations/{studentId} {
+      allow read: if isOwner(studentId) || isParentOf(studentId) || isTeacherOf(studentId) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ─── Weekly Reports ──────────────────────────────────────
+
+    match /weeklyReports/{reportId} {
+      allow read: if isAuthenticated()
+        && (resource.data.studentId == request.auth.uid
+            || isParentOf(resource.data.studentId)
+            || isTeacherOf(resource.data.studentId)
+            || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /weeklyReportRequests/{reqId} {
+      allow create: if isAuthenticated();
+      allow read: if isAdmin();
+    }
+
+    // ─── Messages ────────────────────────────────────────────
+
+    match /messages/{messageId} {
+      allow read: if isAuthenticated()
+        && (resource.data.toUserId == request.auth.uid
+            || resource.data.fromUserId == request.auth.uid
+            || isAdmin());
+      allow create: if isAuthenticated() && request.resource.data.fromUserId == request.auth.uid;
+      allow update: if isAuthenticated()
+        && resource.data.toUserId == request.auth.uid;
+    }
+
+    // ─── Uploaded Content ────────────────────────────────────
+
+    match /uploadedContent/{contentId} {
+      allow read: if isAuthenticated()
+        && (resource.data.studentId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated();
+      allow update: if isAdmin();
+    }
+
+    // ─── Parent & Teacher Accounts ───────────────────────────
+
+    match /parentAccounts/{parentId} {
+      allow read, write: if isOwner(parentId) || isAdmin();
+    }
+
+    match /teacherAccounts/{teacherId} {
+      allow read, write: if isOwner(teacherId) || isAdmin();
+    }
+
+    // ─── Disability Profile Templates (read-only) ────────────
+
+    match /disabilityProfileTemplates/{templateId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // ─── Default: deny all ───────────────────────────────────
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

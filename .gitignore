@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment and secrets
+.env
+.env.local
+.env.*
+!.env.example
+serviceAccountKey.json
+**/serviceAccountKey.json
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Logs
+*.log
+**/*.log
+
+# Firebase cache
+.firebase/
+**/.firebase/
+
+# Python virtual environments & cache
+.venv/
+venv/
+env/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Temp files
+temp.zip
+temp/
+temp_docx/
+*.tmp
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

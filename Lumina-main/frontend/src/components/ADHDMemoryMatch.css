@@ -1,0 +1,442 @@
+/* ADHD Memory Match Game Styles */
+
+.adhd-memory-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8f4f8 0%, #f0e6f6 100%);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif;
+}
+
+.memory-top-back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 12000;
+    padding: 0.7rem 1.1rem;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #5b3a8f;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif;
+}
+
+.memory-top-back-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Header */
+.memory-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: slideDown 0.6s ease-out;
+}
+
+.memory-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #5b3a8f;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 1px;
+}
+
+.matches-counter {
+    font-size: 1.5rem;
+    color: #4a7c8c;
+    font-weight: 700;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Game Grid */
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Memory Card */
+.memory-card {
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    perspective: 1000px;
+    position: relative;
+}
+
+.memory-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.memory-card.flipped .memory-card-inner,
+.memory-card.matched .memory-card-inner {
+    transform: rotateY(180deg);
+}
+
+.memory-card-front,
+.memory-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-size: 3rem;
+    font-weight: bold;
+    backface-visibility: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.memory-card-front {
+    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.memory-card-front::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+    border-radius: 15px;
+    animation: shine 2s infinite;
+}
+
+.memory-card-back {
+    background: linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%);
+    transform: rotateY(180deg);
+    border: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+.memory-card.matched .memory-card-back {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    animation: matchedPulse 0.5s ease-out;
+}
+
+.memory-card:hover:not(.matched) .memory-card-front {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes matchedPulse {
+    0% {
+        transform: rotateY(180deg) scale(1);
+    }
+
+    50% {
+        transform: rotateY(180deg) scale(1.1);
+    }
+
+    100% {
+        transform: rotateY(180deg) scale(1);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(300px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Celebration Confetti */
+.celebration {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: linear-gradient(45deg, #ff6b9d, #ffd89b);
+    border-radius: 50%;
+    left: 50%;
+    top: -20px;
+    animation: confettiFall 1s ease-in forwards;
+}
+
+.confetti:nth-child(1) {
+    left: 20%;
+    background: linear-gradient(45deg, #ffd89b, #ffc3a0);
+    animation-delay: 0s;
+}
+
+.confetti:nth-child(2) {
+    left: 40%;
+    background: linear-gradient(45deg, #a8edea, #fed6e3);
+    animation-delay: 0.1s;
+}
+
+.confetti:nth-child(3) {
+    left: 60%;
+    background: linear-gradient(45deg, #ffafbd, #ffc3a0);
+    animation-delay: 0.2s;
+}
+
+.confetti:nth-child(4) {
+    left: 80%;
+    background: linear-gradient(45deg, #ffd89b, #a8edea);
+    animation-delay: 0.3s;
+}
+
+.confetti:nth-child(5) {
+    left: 30%;
+    background: linear-gradient(45deg, #fed6e3, #ffc3a0);
+    animation-delay: 0.4s;
+}
+
+/* Victory Screen */
+.victory-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e8f4f8 0%, #f0e6f6 100%);
+    padding: 2rem;
+}
+
+.victory-content {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 40px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: bounceIn 0.6s ease-out;
+    max-width: 500px;
+    width: 100%;
+}
+
+.victory-title {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #5b3a8f;
+    margin: 0 0 1rem 0;
+    animation: slideDown 0.8s ease-out;
+}
+
+.victory-message {
+    font-size: 1.5rem;
+    color: #4a7c8c;
+    margin: 0 0 2rem 0;
+    font-weight: 700;
+}
+
+.celebration-large {
+    font-size: 3.5rem;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.star {
+    display: inline-block;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+.star:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.star:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Buttons */
+.play-again-btn,
+.memory-close-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif;
+}
+
+.play-again-btn {
+    background: linear-gradient(135deg, #ffd89b 0%, #ffafbd 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(255, 175, 189, 0.4);
+}
+
+.play-again-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255, 175, 189, 0.6);
+}
+
+.memory-close-btn {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(168, 237, 234, 0.4);
+    margin-top: 1rem;
+}
+
+.memory-close-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(168, 237, 234, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .memory-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .memory-card {
+        width: 90px;
+        height: 90px;
+    }
+
+    .memory-card-front,
+    .memory-card-back {
+        font-size: 2rem;
+    }
+
+    .memory-title {
+        font-size: 2rem;
+    }
+
+    .matches-counter {
+        font-size: 1.2rem;
+    }
+
+    .victory-title {
+        font-size: 2.5rem;
+    }
+
+    .victory-message {
+        font-size: 1.2rem;
+    }
+
+    .celebration-large {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .memory-top-back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.95rem;
+    }
+
+    .memory-grid {
+        gap: 0.75rem;
+    }
+
+    .memory-card {
+        width: 70px;
+        height: 70px;
+    }
+
+    .memory-card-front,
+    .memory-card-back {
+        font-size: 1.5rem;
+    }
+
+    .memory-title {
+        font-size: 1.5rem;
+    }
+
+    .matches-counter {
+        font-size: 1rem;
+    }
+
+    .play-again-btn,
+    .memory-close-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}

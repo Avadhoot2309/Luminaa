@@ -1,0 +1,12 @@
+{
+  "name": "luminaa-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root runner for Lumina workspace",
+  "scripts": {
+    "dev": "npm --prefix Lumina-main/frontend run dev",
+    "build": "npm --prefix Lumina-main/frontend run build",
+    "preview": "npm --prefix Lumina-main/frontend run preview",
+    "backend": "npm --prefix Lumina-main/backend run dev"
+  }
+}
