@@ -35,6 +35,8 @@ build/
 .env
 .env.local
 .env.*
+!.env.example
+!**/.env.example
 serviceAccountKey.json
 **/serviceAccountKey.json
 

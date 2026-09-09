@@ -1,7 +1,29 @@
 /**
- * LEO PROMPTS - Backend version
- * Groq system prompts for Leo adaptive responses
+ * ============================================================================
+ * LEO ADAPTIVE PROMPTS ENGINE (api/utils/leoPrompts.js)
+ * ============================================================================
+ * 
+ * Project: Lumina Neurodivergent Learning Platform
+ * Role: Contextual prompt engineering synthesizing student cognitive state,
+ * neurodivergent pedagogical rules, and screen UI affordances.
+ * 
+ * Pedagogical Architecture for Mentors & Group Members:
+ * ----------------------------------------------------------------------------
+ * 1. Scaffolded Micro-Interventions:
+ *    Instead of functioning like standard generative chatbots that dump long answers,
+ *    Leo practices "guided discovery". When a student struggles, Leo provides
+ *    tiered hints:
+ *    - Level 1: Metacognitive pause (encourages re-reading or checking assumptions)
+ *    - Level 2: Structural cue (points to a specific component or formula)
+ *    - Level 3: Step simplification (breaks multi-part questions into single actions)
+ * 
+ * 2. Neurodivergent Tone Guardrails:
+ *    - Dyslexia: Simple vocabulary, max 12-15 words per sentence, active voice.
+ *    - ADHD: Immediate positive reinforcement, bite-sized tasks, non-judgmental re-engagement.
+ *    - Autism/Anxiety: Predictable structure, literal language without confusing idioms.
+ * ============================================================================
  */
+
 
 const LEO_SYSTEM_PROMPT = `You are Leo, an embedded adaptive learning assistant for Luminaaa, an online education platform.
 

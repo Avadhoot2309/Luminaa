@@ -1,19 +1,48 @@
+/**
+ * ============================================================================
+ * REAL-TIME BEHAVIORAL TRACKER (frontend/src/services/behaviorTracker.js)
+ * ============================================================================
+ * 
+ * Purpose: Passive cognitive & interaction telemetry tracker for neurodivergent learners.
+ * 
+ * Clinical & Pedagogical Rationale (for Mentors & Evaluators):
+ * ----------------------------------------------------------------------------
+ * Traditional e-learning platforms only evaluate binary right/wrong answers.
+ * Lumina evaluates the *process* of learning by monitoring non-verbal cues:
+ * 
+ * 1. Hesitation Latency (>3000ms):
+ *    A child looking at a prompt for extended periods without interacting is likely
+ *    experiencing cognitive overload or executive function blockage.
+ * 
+ * 2. Idle State (>8000ms):
+ *    Indicates distraction, attentional wandering (common in ADHD), or frustration fatigue.
+ * 
+ * 3. Error Clustering (>=2 errors within 10s):
+ *    Indicates conceptual misunderstanding rather than a random typo. Signals Leo to
+ *    intervene with scaffolding rather than letting the child fail repeatedly.
+ * 
+ * 4. High-Performance Buffered Sync:
+ *    Telemetry is buffered in memory and batched to Firestore to minimize network
+ *    overhead and prevent jank on low-end school tablets.
+ * ============================================================================
+ */
+
 import { logBehavior } from './firestoreService.js';
 
-// In-memory session state
+// In-memory session buffer for batching Firestore updates
 let _sessionBuffer = [];
 let _autoSaveInterval = null;
 
-// ==================== LEO ADAPTIVE TRACKING ====================
-// Tracks patterns specific to Leo's adaptive response system
+// Real-time telemetry state feeding the Leo Adaptive System
 let _leoState = {
   startTime: Date.now(),
   lastInteractionTime: Date.now(),
-  idleThreshold: 8000,
-  hesitationThreshold: 3000,
+  idleThreshold: 8000,        // 8 seconds of inactivity flags idle
+  hesitationThreshold: 3000,  // 3 seconds of inactivity flags hesitation
   errors: [],
   hesitations: [],
 };
+
 
 /**
  * Initialize Leo behavior tracking

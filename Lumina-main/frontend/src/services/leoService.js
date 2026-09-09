@@ -1,18 +1,45 @@
 /**
- * LEO SERVICE - Frontend API Client
- * Handles communication with backend Leo API
- * Sends user input + behavior context to /api/leo-assist
+ * ============================================================================
+ * LEO FRONTEND SERVICE (frontend/src/services/leoService.js)
+ * ============================================================================
+ * 
+ * Purpose: Client-side HTTP bridge communicating with the Leo AI backend.
+ * 
+ * How it works (for Mentors & Group Members):
+ * ----------------------------------------------------------------------------
+ * 1. Automatic Context Enrichment:
+ *    When a student speaks or types, this service doesn't just send raw text.
+ *    It queries `behaviorTracker.js` via `getLeoAdaptiveState()` to bundle:
+ *    - Idle time, hesitation flags, and recent error counts.
+ *    - Active screen DOM buttons and interactive cards (`available_elements`).
+ *    - Student neurodivergent profile and grade level.
+ * 
+ * 2. Cloud & Local Environment Agnostic:
+ *    - In development: Defaults to http://localhost:5001.
+ *    - In production: Dynamically targets `import.meta.env.VITE_API_URL` (e.g. Render / Railway).
+ * 
+ * 3. Offline & Error Resiliency:
+ *    If network connectivity drops or the server is warming up, it gracefully
+ *    returns an empathetic fallback response so the child is never left stranded.
+ * ============================================================================
  */
 
 import { getLeoAdaptiveState } from './behaviorTracker.js';
 
+// Determine backend API host based on build environment
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 const LEO_ENDPOINT = `${API_BASE}/api/leo-assist`;
 
 /**
- * Send user input to Leo backend
+ * Dispatch student input and multimodal context to the Leo AI backend
+ * 
  * @param {Object} params
- * @returns {Promise<Object>} { action, response, ui_changes, voice }
+ * @param {string} [params.user_input] - Spoken transcript or typed query
+ * @param {Object} [params.content] - Current lesson or quiz metadata
+ * @param {Object} [params.student_profile] - Student neurodivergent type, age, preferences
+ * @param {Object} [params.lesson_context] - Current chapter, problem index, subject
+ * @param {Array}  [params.available_elements] - Identifiers of clickable UI elements on screen
+ * @returns {Promise<{action: string, response: string, ui_changes: Object, element_id?: string}>}
  */
 export const sendToLeo = async ({
     user_input = '',
@@ -21,6 +48,7 @@ export const sendToLeo = async ({
     lesson_context = {},
     available_elements = [],
 }) => {
+
     try {
         // Get current behavior state
         const behavior_state = getLeoAdaptiveState();

@@ -1,3 +1,27 @@
+/**
+ * ============================================================================
+ * DUAL AUTHENTICATION CONTEXT (frontend/src/contexts/AuthContext.jsx)
+ * ============================================================================
+ * 
+ * Purpose: Unified authentication state provider managing two distinct user classes.
+ * 
+ * Architecture Note for Mentors & Group Members:
+ * ----------------------------------------------------------------------------
+ * 1. Dual-Auth Paradigm:
+ *    - Traditional Web App Auth (Email + Password): Intended for adult educators
+ *      and parents managing student profiles, curricula, and analytics. Powered
+ *      by Google Firebase Authentication.
+ *    - Accessible Neurodivergent Auth (4-Digit PIN & QR Code): Designed for young
+ *      children, especially those with Dyslexia, ADHD, or fine motor challenges,
+ *      who cannot reliably recall or type complex email/password credentials.
+ * 
+ * 2. Session Management & Rehydration:
+ *    - Child sessions persist in `localStorage` under 'studentUser' and are
+ *      rehydrated synchronously on page refresh to prevent jarring login redirects.
+ *    - Teacher sessions are synchronized asynchronously via Firebase `onAuthStateChanged`.
+ * ============================================================================
+ */
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   createUserWithEmailAndPassword,
@@ -16,6 +40,10 @@ import {
 
 const AuthContext = createContext();
 
+/**
+ * Custom hook to access the unified authentication context
+ * @returns {{currentUser, studentUser, userProfile, loading, signup, login, loginWithPIN, loginWithQR, logout}}
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -23,6 +51,7 @@ export const useAuth = () => {
   }
   return context;
 };
+
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null); // Firebase User (Teacher/Parent)

@@ -1,11 +1,30 @@
 /**
- * INTENT PARSER
- * Parses user voice input and extracts actionable intents
- * Uses Claude API to understand natural language commands
+ * ============================================================================
+ * VOICE & TEXT INTENT PARSER (frontend/src/services/intentParser.js)
+ * ============================================================================
+ * 
+ * Purpose: Natural Language Understanding (NLU) pipeline translating student
+ * voice queries and keyboard inputs into typed platform intents.
+ * 
+ * Architecture Note for Mentors & Group Members:
+ * ----------------------------------------------------------------------------
+ * 1. Intent Ontology:
+ *    Organized into three tiers:
+ *    - Navigation: Jump to chapters, subjects, lessons, or dashboards.
+ *    - Gamification: Launch ADHD focus games (Memory Match, Sort Click, Balloon Pop).
+ *    - Accessibility Assistance: Re-reading instructions, visual hints, scaffolding.
+ * 
+ * 2. Two-Stage Processing Pipeline:
+ *    - Stage 1 (Primary): Dispatches to backend `/api/leo/parse-intent` using
+ *      Groq LLM for robust conversational understanding.
+ *    - Stage 2 (Offline Fallback): If network connectivity fails or latency exceeds
+ *      threshold, immediately invokes `parseIntentFallback()` regex heuristics,
+ *      ensuring zero interruption for students in low-connectivity classrooms.
+ * ============================================================================
  */
 
 /**
- * Intent types Leo can recognize
+ * Standardized intent types recognized across the Lumina learning platform
  */
 export const INTENT_TYPES = {
     NAVIGATE_LESSON: 'navigate_lesson',
@@ -21,6 +40,7 @@ export const INTENT_TYPES = {
     REPEAT: 'repeat',
     UNKNOWN: 'unknown',
 };
+
 
 /**
  * Parse user input with Claude

@@ -7,6 +7,9 @@
     "dev": "npm --prefix Lumina-main/frontend run dev",
     "build": "npm --prefix Lumina-main/frontend run build",
     "preview": "npm --prefix Lumina-main/frontend run preview",
-    "backend": "npm --prefix Lumina-main/backend run dev"
+    "start": "npm --prefix Lumina-main/frontend run preview",
+    "backend": "npm --prefix Lumina-main/backend run dev",
+    "backend:start": "npm --prefix Lumina-main/backend start",
+    "install:all": "npm --prefix Lumina-main/frontend install && npm --prefix Lumina-main/backend install"
   }
 }

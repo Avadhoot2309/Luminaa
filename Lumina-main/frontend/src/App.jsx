@@ -1,3 +1,26 @@
+/**
+ * ============================================================================
+ * LUMINA CLIENT APPLICATION ROOT (frontend/src/App.jsx)
+ * ============================================================================
+ * 
+ * Project: Lumina — Neurodivergent & Multimodal Adaptive Learning Platform
+ * Purpose: Single-Page Application (SPA) routing, role-based route protection,
+ * global accessibility themes, and multimodal provider tree.
+ * 
+ * Context Hierarchy for Mentors & Group Members:
+ * ----------------------------------------------------------------------------
+ * 1. <AccessibilityProvider>: Manages dyslexic fonts, high contrast, text size,
+ *    and audio toggles across the entire tree.
+ * 2. <ThemeProvider>: Injects Material UI styling with OpenDyslexic fallbacks.
+ * 3. <AuthProvider>: Manages dual authentication:
+ *    - Standard Firebase Auth for Teachers / Parents / Admins.
+ *    - Lightweight PIN / QR-Code authentication for young students.
+ * 4. <ProfileProvider> & <ProgressProvider>: Real-time progress syncing with Firestore.
+ * 5. <LearningAssistantProvider>: Orchestrates Leo the Tiger voice assistant state.
+ * 6. <GlobalAssistant> & <DiyaGuru>: Interactive mascot and visual assistants.
+ * ============================================================================
+ */
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -8,6 +31,7 @@ import { ProgressProvider } from './contexts/ProgressContext';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import { LearningAssistantProvider } from './contexts/LearningAssistantContext';
 import GlobalAssistant from './components/GlobalAssistant';
+
 
 import Login from './pages/Login';
 import Register from './pages/auth/Register';

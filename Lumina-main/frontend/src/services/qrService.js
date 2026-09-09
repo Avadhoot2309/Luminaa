@@ -1,9 +1,29 @@
 /**
- * QR SERVICE
- * Generates and parses QR codes for student login.
+ * ============================================================================
+ * ACCESSIBLE QR AUTHENTICATION SERVICE (frontend/src/services/qrService.js)
+ * ============================================================================
+ * 
+ * Purpose: Frictionless login card generation for young and neurodivergent students.
+ * 
+ * Assistive Design Note for Mentors & Group Members:
+ * ----------------------------------------------------------------------------
+ * 1. Overcoming Cognitive Barriers:
+ *    Typing complex passwords is a major barrier for children with Dyslexia,
+ *    Dyspraxia (fine motor difficulties), or ADHD. Lumina provides teachers
+ *    with a 1-click printable "Desk Badge".
+ * 
+ * 2. High Error Correction ('H' Level):
+ *    Generated QR codes use Level H error correction (30% redundancy), allowing
+ *    the badge to scan reliably even if crumpled, drawn on, or smudged in a classroom.
+ * 
+ * 3. Dynamic Origin Detection:
+ *    Uses `window.location.origin` so badges work automatically in local testing,
+ *    staging, or production domains without hardcoded URLs.
+ * ============================================================================
  */
 
 import QRCode from 'qrcode';
+
 
 /**
  * Generates the raw QR data string for Lumina login.

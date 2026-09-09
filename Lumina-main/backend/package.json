@@ -4,6 +4,7 @@
   "description": "AdaptLearn Backend - Firebase Cloud Functions",
   "main": "functions/index.js",
   "scripts": {
+    "start": "node functions/index.js",
     "serve": "firebase emulators:start",
     "dev": "node functions/index.js",
     "shell": "firebase functions:shell",
