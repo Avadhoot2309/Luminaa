@@ -33,17 +33,8 @@ build/
 
 # Firebase / Secret files
 .env
-.env.*
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-**/.env
-**/.env.*
-**/.env.local
-**/.env.development.local
-**/.env.test.local
-**/.env.production.local
+.env.*
 !.env.example
 !**/.env.example
 serviceAccountKey.json
