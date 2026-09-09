@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  signInWithRedirect, 
+  getRedirectResult, 
+  GoogleAuthProvider, 
+  signOut 
+} from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { useAuth } from '../contexts/AuthContext';
@@ -88,6 +95,43 @@ export default function Login() {
   const navigate = useNavigate();
   const { login, loginWithPIN, studentUser, currentUser, loading: authLoading } = useAuth();
 
+  // Listen for Google Redirect sign-in result when returning from accounts.google.com
+  useEffect(() => {
+    let isMounted = true;
+    const checkRedirect = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result && result.user && isMounted) {
+          setLoading(true);
+          const user = result.user;
+          try {
+            await setDoc(doc(db, 'users', user.uid), {
+              email: user.email,
+              name: user.displayName || 'Educator',
+              role: 'teacher',
+              lastLogin: new Date().toISOString()
+            }, { merge: true });
+            saveAdminSession(user.uid, 'teacher');
+          } catch (dbErr) {
+            console.warn('Could not save user profile to Firestore:', dbErr);
+          }
+          window.location.href = '/teacher-dashboard';
+        }
+      } catch (redirectErr) {
+        console.error('[Auth] Redirect sign-in error:', redirectErr);
+        if (isMounted) {
+          if (redirectErr.code === 'auth/unauthorized-domain') {
+            setError(`Domain not authorized! Please add "${window.location.hostname}" to Firebase Console → Authentication → Settings → Authorized Domains.`);
+          } else {
+            setError(mapFirebaseError(redirectErr.code) || redirectErr.message);
+          }
+        }
+      }
+    };
+    checkRedirect();
+    return () => { isMounted = false; };
+  }, []);
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     localStorage.setItem('lastLoginTab', tab);
@@ -135,11 +179,12 @@ export default function Login() {
     setLoading(true);
     setError('');
     const provider = new GoogleAuthProvider();
-    // Prompt account selection so user is asked which Gmail account to use
     provider.setCustomParameters({
       prompt: 'select_account'
     });
+
     try {
+      // First attempt with popup
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
@@ -157,13 +202,26 @@ export default function Login() {
 
       window.location.href = '/teacher-dashboard';
     } catch (err) {
-      console.error('Google login error:', err);
-      if (err.code === 'auth/unauthorized-domain') {
+      console.warn('Google popup interaction notice:', err.code, err.message);
+
+      // If popup was closed, blocked, or couldn't complete (e.g. Action needed / cookie restrictions),
+      // seamlessly redirect to the full Google sign-in page!
+      if (
+        err.code === 'auth/popup-closed-by-user' ||
+        err.code === 'auth/popup-blocked' ||
+        err.code === 'auth/cancelled-popup-request' ||
+        err.code === 'auth/internal-error'
+      ) {
+        console.log('[Auth] Switching to full-page Google redirect sign-in...');
+        try {
+          await signInWithRedirect(auth, provider);
+          return; // Browser will navigate directly to accounts.google.com
+        } catch (redirectErr) {
+          console.error('Redirect initiation error:', redirectErr);
+          setError(redirectErr.message);
+        }
+      } else if (err.code === 'auth/unauthorized-domain') {
         setError(`Domain not authorized! Please add "${window.location.hostname}" in Firebase Console → Authentication → Settings → Authorized Domains.`);
-      } else if (err.code === 'auth/popup-closed-by-user') {
-        setError(`Sign-in was closed. If it closed immediately by itself, your deployed domain (${window.location.hostname}) must be added to Firebase Console → Authentication → Settings → Authorized Domains.`);
-      } else if (err.code === 'auth/popup-blocked') {
-        setError('Browser popup blocked. Please enable popups in your address bar.');
       } else {
         setError(mapFirebaseError(err.code) || err.message);
       }
