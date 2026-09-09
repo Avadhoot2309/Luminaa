@@ -110,6 +110,10 @@ export default function Login() {
       case 'auth/wrong-password': return 'Incorrect password. Try again.';
       case 'auth/too-many-requests': return 'Too many attempts. Please wait a moment.';
       case 'auth/network-request-failed': return 'Network error. Check your connection.';
+      case 'auth/unauthorized-domain': 
+        return `Domain not authorized! Add "${window.location.hostname}" to Firebase Console → Authentication → Settings → Authorized Domains.`;
+      case 'auth/popup-blocked':
+        return 'The Google sign-in popup was blocked by your browser. Please allow popups for this site.';
       default: return 'Something went wrong. Please try again.';
     }
   };
@@ -131,7 +135,7 @@ export default function Login() {
     setLoading(true);
     setError('');
     const provider = new GoogleAuthProvider();
-    // 🚀 CRITICAL FIX: Prompt account selection so user is asked which Gmail account to use
+    // Prompt account selection so user is asked which Gmail account to use
     provider.setCustomParameters({
       prompt: 'select_account'
     });
@@ -154,10 +158,14 @@ export default function Login() {
       window.location.href = '/teacher-dashboard';
     } catch (err) {
       console.error('Google login error:', err);
-      if (err.code === 'auth/popup-closed-by-user') {
-        setError('Google sign-in was cancelled. Please select your Gmail account.');
+      if (err.code === 'auth/unauthorized-domain') {
+        setError(`Domain not authorized! Please add "${window.location.hostname}" in Firebase Console → Authentication → Settings → Authorized Domains.`);
+      } else if (err.code === 'auth/popup-closed-by-user') {
+        setError(`Sign-in was closed. If it closed immediately by itself, your deployed domain (${window.location.hostname}) must be added to Firebase Console → Authentication → Settings → Authorized Domains.`);
+      } else if (err.code === 'auth/popup-blocked') {
+        setError('Browser popup blocked. Please enable popups in your address bar.');
       } else {
-        setError(mapFirebaseError(err.code));
+        setError(mapFirebaseError(err.code) || err.message);
       }
       setLoading(false);
     }
