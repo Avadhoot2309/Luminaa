@@ -5,7 +5,8 @@
   "description": "Root runner for Lumina workspace",
   "scripts": {
     "dev": "npm --prefix Lumina-main/frontend run dev",
-    "build": "npm --prefix Lumina-main/frontend run build",
+    "prebuild": "npm --prefix Lumina-main/frontend install",
+    "build": "npm --prefix Lumina-main/frontend run build && node -e \"const fs=require('fs'); fs.cpSync('Lumina-main/frontend/dist', 'dist', {recursive: true});\"",
     "preview": "npm --prefix Lumina-main/frontend run preview",
     "start": "npm --prefix Lumina-main/frontend run preview",
     "backend": "npm --prefix Lumina-main/backend run dev",
